@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest } from 'next/server';
 import { withErrorHandling, apiSuccess, apiError } from '@/lib/api-handler';
 import prisma from '@/lib/prisma';

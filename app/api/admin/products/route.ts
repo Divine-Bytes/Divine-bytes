@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 // TODO: Add withAdminAuth(handler) protection - Task 4.4
 import { NextRequest } from 'next/server';
 import { withErrorHandling, apiSuccess, apiError } from '@/lib/api-handler';

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandling, apiError } from '@/lib/api-handler';
 import prisma from '@/lib/prisma';
@@ -40,9 +42,9 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
 
   response.cookies.set('admin_token', token, {
     httpOnly: true,
-    secure: false, // Allow HTTP in dev
-    sameSite: 'lax', // lax instead of strict — works better with redirects
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7,
     path: '/',
   });
 
