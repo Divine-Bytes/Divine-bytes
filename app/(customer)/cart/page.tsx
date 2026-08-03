@@ -6,6 +6,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { useCart } from '@/lib/cart/CartContext';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default function CartPage() {
   const { items } = useCart();
 

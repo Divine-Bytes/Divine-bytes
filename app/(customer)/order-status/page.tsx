@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { formatPrice } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 interface OrderStatus {
   orderNumber: string;
   orderStatus: string;

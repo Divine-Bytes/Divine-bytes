@@ -11,6 +11,8 @@ import { useCart } from '@/lib/cart/CartContext';
 import { useToast } from '@/components/ui/Toast';
 import { formatPrice } from '@/lib/utils';
 
+export const dynamic = 'force-dynamic';
+
 const paymentOptions = [
   { value: 'BANK_TRANSFER', label: 'Bank Transfer (03274056532)' },
   { value: 'JAZZCASH', label: 'Easypaisa (03274056532)' },
