@@ -6,6 +6,8 @@ import { formatPrice } from '@/lib/utils';
 
 export const metadata: Metadata = { title: 'Orders — Divine Bytes Admin' };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({ orderBy: { createdAt: 'desc' }, include: { customer: true } });
 

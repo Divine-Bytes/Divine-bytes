@@ -6,6 +6,8 @@ import { AdminProductsClient } from './AdminProductsClient';
 
 export const metadata: Metadata = { title: 'Products — Divine Bytes Admin' };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
     include: { category: true },

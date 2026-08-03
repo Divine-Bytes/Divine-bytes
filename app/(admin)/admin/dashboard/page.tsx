@@ -6,6 +6,8 @@ import { formatPrice } from '@/lib/utils';
 
 export const metadata: Metadata = { title: 'Dashboard — Divine Bytes Admin' };
 
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   const [totalOrders, pendingOrders, pendingPayments, revenueResult, recentOrders] = await Promise.all([
     prisma.order.count(),

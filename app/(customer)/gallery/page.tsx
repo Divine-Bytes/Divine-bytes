@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 // Cache gallery for 5 minutes
 export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 async function getGalleryImages() {
   try { return await prisma.galleryImage.findMany({ orderBy: { displayOrder: 'asc' } }); }

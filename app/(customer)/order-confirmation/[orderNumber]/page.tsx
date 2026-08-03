@@ -7,6 +7,7 @@ import { OrderConfirmationClient } from './OrderConfirmationClient';
 interface Props { params: { orderNumber: string }; }
 
 export const metadata: Metadata = { title: 'Order Confirmed' };
+export const dynamic = 'force-dynamic';
 
 async function getOrder(orderNumber: string) {
   return prisma.order.findUnique({

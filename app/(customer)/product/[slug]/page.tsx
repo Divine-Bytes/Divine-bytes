@@ -5,6 +5,7 @@ import { ProductDetailsClient } from './ProductDetailsClient';
 
 // Revalidate every 10 seconds so new images appear quickly
 export const revalidate = 10;
+export const dynamic = 'force-dynamic';
 
 interface Props { params: { slug: string }; }
 

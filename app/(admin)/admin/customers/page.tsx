@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 
 export const metadata: Metadata = { title: 'Customers — Divine Bytes Admin' };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminCustomersPage() {
   const customers = await prisma.customer.findMany({
     include: { _count: { select: { orders: true } } },
