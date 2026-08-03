@@ -4,6 +4,8 @@ import { verifyJwt } from '@/lib/auth';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { ToastProvider } from '@/components/ui/Toast';
 
+export const dynamic = 'force-dynamic';
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = cookies();
   const token = cookieStore.get('admin_token')?.value;

@@ -5,6 +5,8 @@ import { CartProvider } from '@/lib/cart/CartContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: { default: 'Divine Bytes — Luxury Handcrafted Chocolates', template: '%s | Divine Bytes' },
   description: 'Premium handcrafted chocolates made with the finest ingredients.',

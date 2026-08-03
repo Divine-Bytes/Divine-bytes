@@ -101,6 +101,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error('useCart must be used within CartProvider');
+  if (!ctx) {
+    // Return safe no-op defaults during SSR / before CartProvider mounts
+    return {
+      items: [] as CartItem[],
+      addItem: () => {},
+      updateItem: () => {},
+      removeItem: () => {},
+      clearCart: () => {},
+      total: 0,
+      itemCount: 0,
+    };
+  }
   return ctx;
 }
