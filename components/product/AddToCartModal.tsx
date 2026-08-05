@@ -112,13 +112,13 @@ export function AddToCartModal({ product, imageUrl, open, onClose }: AddToCartMo
                 onClick={() => handleAction('cart')}
                 className="w-full h-12 rounded-full bg-deep-navy text-white font-body font-medium text-sm hover:bg-opacity-90 transition-all"
               >
-                View Cart
+                Add and View Cart
               </button>
               <button
                 onClick={() => handleAction('shop')}
                 className="w-full h-12 rounded-full border-2 border-deep-navy text-deep-navy font-body font-medium text-sm hover:bg-deep-navy hover:text-white transition-all"
               >
-                Continue Shopping
+                Add and Continue Shopping
               </button>
             </div>
           </motion.div>
