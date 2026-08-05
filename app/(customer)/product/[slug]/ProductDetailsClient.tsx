@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { ProductImageGallery } from '@/components/product/ProductImageGallery';
 import { CustomizationPanel } from '@/components/product/CustomizationPanel';
 import { AddToCartModal } from '@/components/product/AddToCartModal';
-import { QuantitySelector } from '@/components/ui/QuantitySelector';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/lib/cart/CartContext';
 import { useToast } from '@/components/ui/Toast';
@@ -17,7 +16,6 @@ interface ProductDetailsClientProps {
 }
 
 export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
-  const [qty, setQty] = useState(1);
   const [customization, setCustomization] = useState<CustomizationData | null>(null);
   const [customError, setCustomError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,9 +34,9 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
     setCustomError('');
 
     if (isSignatureBar) {
-      // Signature bar — add with customization and show confirmation modal
+      // Signature bar — add with customization, quantity 1, go to cart
       addItem({
-        productId: product.id, name: product.name, price: product.price, quantity: qty,
+        productId: product.id, name: product.name, price: product.price, quantity: 1,
         imageUrl, slug: product.slug,
         customization: customization ?? undefined,
       });
@@ -47,7 +45,7 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
       return;
     }
 
-    // Regular product — show the modal so user can choose
+    // Regular product — open modal with quantity selector
     setModalOpen(true);
   }
 
@@ -82,17 +80,15 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
             </div>
           )}
 
-          <div className="flex items-center gap-4 flex-wrap">
-            <QuantitySelector value={qty} onChange={setQty} />
-            <Button onClick={handleAddToCart} size="lg" className="flex-1 min-w-[160px]">
-              {isSignatureBar ? 'Add Customized Bar to Cart' : 'Add to Cart'}
-            </Button>
-          </div>
+          {/* Single Add to Cart button — no external quantity selector */}
+          <Button onClick={handleAddToCart} size="lg">
+            {isSignatureBar ? 'Add Customized Bar to Cart' : 'Add to Cart'}
+          </Button>
 
           {/* Mobile sticky bar */}
           <div className="fixed bottom-0 left-0 right-0 p-4 bg-warm-white/95 backdrop-blur-sm border-t border-gray-100 md:hidden z-30">
             <Button onClick={handleAddToCart} size="lg" className="w-full">
-              {isSignatureBar ? 'Add Customized Bar to Cart' : `Add to Cart · ${formatPrice(product.price * qty)}`}
+              {isSignatureBar ? 'Add Customized Bar to Cart' : 'Add to Cart'}
             </Button>
           </div>
         </div>
