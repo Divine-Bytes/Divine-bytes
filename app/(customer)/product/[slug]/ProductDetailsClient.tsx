@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProductImageGallery } from '@/components/product/ProductImageGallery';
 import { CustomizationPanel } from '@/components/product/CustomizationPanel';
+import { AddToCartModal } from '@/components/product/AddToCartModal';
 import { QuantitySelector } from '@/components/ui/QuantitySelector';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/lib/cart/CartContext';
@@ -19,10 +20,12 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
   const [qty, setQty] = useState(1);
   const [customization, setCustomization] = useState<CustomizationData | null>(null);
   const [customError, setCustomError] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
   const { addItem } = useCart();
   const { showToast } = useToast();
   const router = useRouter();
   const isSignatureBar = product.slug === 'signature-chocolate-bar';
+  const imageUrl = product.images?.[0]?.imageUrl ?? '';
 
   function handleAddToCart() {
     if (isSignatureBar && !customization) {
@@ -31,12 +34,21 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
       return;
     }
     setCustomError('');
-    addItem({
-      productId: product.id, name: product.name, price: product.price, quantity: qty,
-      imageUrl: product.images?.[0]?.imageUrl ?? '', slug: product.slug,
-      customization: customization ?? undefined,
-    });
-    showToast('Added to cart', 'success');
+
+    if (isSignatureBar) {
+      // Signature bar — add with customization and show confirmation modal
+      addItem({
+        productId: product.id, name: product.name, price: product.price, quantity: qty,
+        imageUrl, slug: product.slug,
+        customization: customization ?? undefined,
+      });
+      showToast('Customized bar added to cart', 'success');
+      router.push('/cart');
+      return;
+    }
+
+    // Regular product — show the modal so user can choose
+    setModalOpen(true);
   }
 
   return (
@@ -85,6 +97,16 @@ export function ProductDetailsClient({ product }: ProductDetailsClientProps) {
           </div>
         </div>
       </div>
+
+      {/* Add to cart modal for non-signature products */}
+      {!isSignatureBar && (
+        <AddToCartModal
+          product={product}
+          imageUrl={imageUrl}
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

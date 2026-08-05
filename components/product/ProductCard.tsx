@@ -1,11 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import { useCart } from '@/lib/cart/CartContext';
-import { useToast } from '@/components/ui/Toast';
+import { AddToCartModal } from './AddToCartModal';
 import { formatPrice } from '@/lib/utils';
 import type { Product } from '@/types';
 
@@ -22,43 +23,52 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addItem } = useCart();
-  const { showToast } = useToast();
+  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
   const imageUrl = product.images?.[0]?.imageUrl ?? '/placeholder-chocolate.jpg';
   const altText = product.images?.[0]?.altText || product.name;
+  const isSignatureBar = product.slug === 'signature-chocolate-bar';
 
   function handleAddToCart() {
-    if (product.slug === 'signature-chocolate-bar') {
-      window.location.href = `/product/${product.slug}`;
+    if (isSignatureBar) {
+      router.push(`/product/${product.slug}`);
       return;
     }
-    addItem({ productId: product.id, name: product.name, price: Number(product.price), quantity: 1, imageUrl, slug: product.slug });
-    showToast('Added to cart', 'success');
+    setModalOpen(true);
   }
 
   return (
-    <motion.article
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-      className="group rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
-    >
-      <Link href={`/product/${product.slug}`} className="block relative aspect-square overflow-hidden bg-gray-50">
-        <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.3 }} className="w-full h-full">
-          <ProductImg src={imageUrl} alt={altText} />
-        </motion.div>
-      </Link>
-      <div className="p-2.5 sm:p-4 flex flex-col gap-1.5 sm:gap-2">
-        <Link href={`/product/${product.slug}`} className="group-hover:text-luxury-gold transition-colors">
-          <h3 className="font-heading text-sm sm:text-base text-deep-navy line-clamp-1">{product.name}</h3>
+    <>
+      <motion.article
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="group rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+      >
+        <Link href={`/product/${product.slug}`} className="block relative aspect-square overflow-hidden bg-gray-50">
+          <motion.div whileHover={{ scale: 1.04 }} transition={{ duration: 0.3 }} className="w-full h-full">
+            <ProductImg src={imageUrl} alt={altText} />
+          </motion.div>
         </Link>
-        <p className="font-body text-xs text-gray-400 line-clamp-2 hidden sm:block">{product.description}</p>
-        <div className="flex items-center justify-between mt-1 sm:mt-2 gap-1.5">
-          <span className="font-body font-semibold text-deep-navy text-sm sm:text-base">{formatPrice(Number(product.price))}</span>
-          <Button size="sm" onClick={handleAddToCart} className="shrink-0 text-xs sm:text-sm px-2.5 sm:px-4 h-8 sm:h-9">
-            {product.slug === 'signature-chocolate-bar' ? 'Customize' : 'Add'}
-          </Button>
+        <div className="p-2.5 sm:p-4 flex flex-col gap-1.5 sm:gap-2">
+          <Link href={`/product/${product.slug}`} className="group-hover:text-luxury-gold transition-colors">
+            <h3 className="font-heading text-sm sm:text-base text-deep-navy line-clamp-1">{product.name}</h3>
+          </Link>
+          <p className="font-body text-xs text-gray-400 line-clamp-2 hidden sm:block">{product.description}</p>
+          <div className="flex items-center justify-between mt-1 sm:mt-2 gap-1.5">
+            <span className="font-body font-semibold text-deep-navy text-sm sm:text-base">{formatPrice(Number(product.price))}</span>
+            <Button size="sm" onClick={handleAddToCart} className="shrink-0 text-xs sm:text-sm px-2.5 sm:px-4 h-8 sm:h-9">
+              {isSignatureBar ? 'Customize' : 'Add'}
+            </Button>
+          </div>
         </div>
-      </div>
-    </motion.article>
+      </motion.article>
+
+      <AddToCartModal
+        product={{ ...product, price: Number(product.price) }}
+        imageUrl={imageUrl}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
+    </>
   );
 }
