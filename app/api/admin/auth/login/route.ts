@@ -7,12 +7,17 @@ import { verifyPassword, signJwt } from '@/lib/auth';
 import { loginSchema } from '@/lib/validations/auth';
 import { getRateLimiter } from '@/lib/rate-limit';
 
-const loginLimiter = getRateLimiter({ limit: 5, windowMs: 15 * 60 * 1000 });
+// Lazy initialisation — not created at import time (avoids build-time crash)
+let loginLimiter: ReturnType<typeof getRateLimiter> | null = null;
+function getLimiter() {
+  if (!loginLimiter) loginLimiter = getRateLimiter({ limit: 5, windowMs: 15 * 60 * 1000 });
+  return loginLimiter;
+}
 
 export const POST = withErrorHandling(async (req: NextRequest) => {
   // Rate limiting — 5 attempts per IP per 15 minutes
   const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown';
-  const limited = loginLimiter.check(ip);
+  const limited = getLimiter().check(ip);
   if (limited) {
     return apiError('Too many login attempts. Please try again later.', 429);
   }

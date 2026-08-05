@@ -45,5 +45,9 @@ export function getRateLimiter(options: RateLimiterOptions): RateLimiter {
   return { check };
 }
 
-// Shared public API rate limiter — 100 req/min per IP
-export const publicApiLimiter = getRateLimiter({ limit: 100, windowMs: 60 * 1000 });
+// Shared public API rate limiter — 100 req/min per IP (lazy, not created at import time)
+let _publicApiLimiter: RateLimiter | null = null;
+export function getPublicApiLimiter(): RateLimiter {
+  if (!_publicApiLimiter) _publicApiLimiter = getRateLimiter({ limit: 100, windowMs: 60 * 1000 });
+  return _publicApiLimiter;
+}
