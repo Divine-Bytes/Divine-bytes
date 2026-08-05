@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // TODO: Add withAdminAuth(handler) protection - Task 4.4
 import { NextRequest } from 'next/server';
