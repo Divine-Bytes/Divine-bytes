@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ProductGrid } from '@/components/product/ProductGrid';
-import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import type { Product, Category } from '@/types';
@@ -46,20 +45,24 @@ export function ShopClient() {
   useEffect(() => { if (page > 1) loadProducts(); }, [page]);
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Input placeholder="Search chocolates…" value={search} onChange={e => setSearch(e.target.value)} className="max-w-sm" aria-label="Search products" />
-      </div>
+    <div className="flex flex-col gap-4">
+      <input
+        placeholder="Search chocolates…"
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        aria-label="Search products"
+        className="w-full h-10 md:h-12 px-4 rounded-xl border border-gray-200 font-body text-sm text-dark-gray placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-deep-navy/20 focus:border-deep-navy transition-colors bg-white"
+      />
       {categories.length > 0 && (
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-1.5 flex-wrap">
           <button onClick={() => setCategoryId('')}
-            className={cn('px-4 py-2 rounded-full text-sm font-body border transition-colors min-h-[44px]',
+            className={cn('px-3 py-1.5 rounded-full text-xs font-body border transition-colors min-h-[32px]',
               !categoryId ? 'bg-deep-navy text-white border-deep-navy' : 'border-gray-200 text-dark-gray hover:border-deep-navy')}>
             All
           </button>
           {categories.map(cat => (
             <button key={cat.id} onClick={() => setCategoryId(cat.id)}
-              className={cn('px-4 py-2 rounded-full text-sm font-body border transition-colors min-h-[44px]',
+              className={cn('px-3 py-1.5 rounded-full text-xs font-body border transition-colors min-h-[32px]',
                 categoryId === cat.id ? 'bg-deep-navy text-white border-deep-navy' : 'border-gray-200 text-dark-gray hover:border-deep-navy')}>
               {cat.name}
             </button>

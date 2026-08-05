@@ -11,10 +11,10 @@ export const revalidate = 60;
 
 export default function ShopPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10 md:py-16">
-      <div className="mb-8">
-        <h1 className="font-heading text-3xl md:text-4xl text-deep-navy mb-2">Our Collection</h1>
-        <p className="font-body text-gray-500">Discover every handcrafted creation from Divine Bytes.</p>
+    <div className="max-w-7xl mx-auto px-4 py-6 md:py-16">
+      <div className="mb-5 md:mb-8">
+        <h1 className="font-heading text-2xl md:text-4xl text-deep-navy mb-1">Our Collection</h1>
+        <p className="font-body text-gray-500 text-sm">Discover every handcrafted creation from Divine Bytes.</p>
       </div>
       <ShopClient />
     </div>
